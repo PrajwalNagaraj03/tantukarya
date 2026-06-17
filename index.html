@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover tantukarya, a premium handcrafted label celebrating the ancient art of Ajrakh hand block printing. Explore elegant tops, shirts, and shorts for women, naturally dyed and sustainably crafted.">
+    <title>tantukarya | Premium Hand Block-Printed Ajrakh Apparel</title>
+    
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- --- HEADER / NAVIGATION --- -->
+    <header class="header" id="header">
+        <div class="nav-container">
+            <a href="#" class="logo" aria-label="tantukarya Home">
+                <span class="logo-icon">✦</span>
+                <div>
+                    <h1 class="logo-text">tantukarya</h1>
+                    <div class="logo-subtitle">hand block print</div>
+                </div>
+            </a>
+            
+            <nav>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="#" class="nav-link active">Home</a></li>
+                    <li><a href="#craft" class="nav-link">The Craft</a></li>
+                    <li><a href="#shop" class="nav-link">Shop</a></li>
+                    <li><a href="#heritage" class="nav-link">Our Heritage</a></li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                <button class="cart-btn" id="cart-toggle-btn" aria-label="Open shopping cart">
+                    <!-- Cart SVG Icon -->
+                    <svg class="cart-btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-badge" id="cart-badge-count">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- --- HERO SECTION --- -->
+    <section class="hero" id="home">
+        <div class="hero-bg-pattern"></div>
+        <div class="hero-bg-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-subtitle">Crafted by Hands, Woven by Time</span>
+                <h2 class="hero-title">The Timeless Art of Ajrakh</h2>
+                <p class="hero-description">
+                    Rooted in heritage, <strong>tantukarya</strong> brings you the organic luxury of hand-carved block prints. Made with pure vegetable dyes, fermented indigo, and madder root, every piece tells the story of 16-step artisanal chemistry.
+                </p>
+                <div class="hero-actions">
+                    <a href="#shop" class="btn btn-primary">Shop Collection</a>
+                    <a href="#craft" class="btn btn-outline">Explore the Craft</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="ornament-line">
+        <span class="ornament-star">✦</span>
+    </div>
+
+    <!-- --- THE CRAFT / STORY SECTION --- -->
+    <section class="craft-section" id="craft">
+        <div class="container">
+            <div class="craft-grid">
+                <div class="craft-image-wrapper">
+                    <img src="assets/ajrakh_craft.png" alt="Artisan hand carving block printing patterns in natural dyes" class="craft-image" loading="lazy">
+                    <div class="craft-badge-stamp">
+                        100%<br>Natural<br>Dyes
+                    </div>
+                </div>
+                <div>
+                    <span class="hero-subtitle">Our Heritage</span>
+                    <h2 class="section-title">The 16-Step Alchemy</h2>
+                    <p class="text-muted" style="margin-bottom: 2rem;">
+                        Ajrakh is not merely printing; it is a sacred conversation between wood, river water, metal rust, and natural dyes. Passing through multiple washes of hard-water resist, steam boiling, and sun-drying, each motif emerges with unmatched earthy richness.
+                    </p>
+                    
+                    <ul class="craft-steps">
+                        <li class="craft-step-item">
+                            <span class="craft-step-number">01</span>
+                            <div>
+                                <h3 class="craft-step-title">Saaj (Preparation)</h3>
+                                <p class="craft-step-desc">The fabric is washed with soda ash and castor oil to open up the cotton pores and prepare it for colors.</p>
+                            </div>
+                        </li>
+                        <li class="craft-step-item">
+                            <span class="craft-step-number">02</span>
+                            <div>
+                                <h3 class="craft-step-title">Asal (Printing the resist)</h3>
+                                <p class="craft-step-desc">Artisans print precise geometric starch outlines to resist color, using hand-carved wooden blocks.</p>
+                            </div>
+                        </li>
+                        <li class="craft-step-item">
+                            <span class="craft-step-number">03</span>
+                            <div>
+                                <h3 class="craft-step-title">Indigo & Madder Fermentation</h3>
+                                <p class="craft-step-desc">Fabrics are dipped repeatedly in natural clay fermentation vats to lock in deep blues and organic reds.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="ornament-line">
+        <span class="ornament-star">✦</span>
+    </div>
+
+    <!-- --- SHOP / PRODUCT SECTION --- -->
+    <section class="shop-section" id="shop">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="hero-subtitle">Curated Wardrobe</span>
+                <h2 class="section-title">Shop Our Collections</h2>
+                <p class="text-muted" style="max-width: 600px; margin: 1rem auto 0;">
+                    Modern silhouettes designed to blend contemporary comfort with ancient block-printing excellence.
+                </p>
+            </div>
+            
+            <!-- Filter Chips -->
+            <div class="filter-chips">
+                <button class="filter-chip active" data-filter="all">All Apparel</button>
+                <button class="filter-chip" data-filter="tops">Tops</button>
+                <button class="filter-chip" data-filter="shirts">Shirts</button>
+                <button class="filter-chip" data-filter="shorts">Shorts</button>
+            </div>
+            
+            <!-- Product Grid -->
+            <div class="product-grid" id="product-grid">
+                <!-- Dynamically populated via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- --- OUR HERITAGE STATEMENT --- -->
+    <section class="craft-section" id="heritage" style="background-color: var(--color-neutral-ecru); border-top: 1px solid var(--color-border);">
+        <div class="container text-center" style="max-width: 800px;">
+            <span class="hero-subtitle">Conscious Luxury</span>
+            <h2 class="section-title">The tantukarya Philosophy</h2>
+            <p class="text-muted" style="font-size: 1.1rem; line-height: 1.8; margin-top: 1.5rem;">
+                "Tantukarya" means the work of threads. We stand as a bridge connecting generational block printers of Kutch to the modern conscious wardrobe. By purchasing a tantukarya garment, you support the conservation of water-resilient handprinting methods and secure fair-wage livelihoods for artisan clusters. No two prints are identical—celebrating the beauty of organic human error.
+            </p>
+            <div class="ornament-line">
+                <span class="ornament-star">✦</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- FOOTER --- -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <span class="footer-logo-text">tantukarya</span>
+                    <p class="footer-desc">
+                        Honoring the craft, preserving the culture, and styling the future with authentic hand block printed textile art.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="footer-heading">Shop</h3>
+                    <ul class="footer-links">
+                        <li><a href="#shop" class="footer-link">All Collections</a></li>
+                        <li><a href="#shop" class="footer-link">Indigo Tunics</a></li>
+                        <li><a href="#shop" class="footer-link">Madder Linen Shirts</a></li>
+                        <li><a href="#shop" class="footer-link">Leisure Shorts</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="footer-heading">Story</h3>
+                    <ul class="footer-links">
+                        <li><a href="#craft" class="footer-link">The 16-Step Dyeing</a></li>
+                        <li><a href="#heritage" class="footer-link">Our Artisans</a></li>
+                        <li><a href="#" class="footer-link">Sustainability Report</a></li>
+                        <li><a href="#" class="footer-link">Care Instructions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="footer-heading">Newsletter</h3>
+                    <p class="footer-desc" style="margin-bottom: 1rem; font-size: 0.85rem;">
+                        Subscribe for early drops, craft stories, and artisan updates.
+                    </p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to tantukarya!'); this.reset();">
+                        <input type="email" placeholder="Your Email Address" class="newsletter-input" required aria-label="Email Address for newsletter">
+                        <button type="submit" class="newsletter-btn" aria-label="Subscribe">
+                            <!-- Right Arrow SVG -->
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 tantukarya. Built with respect for our artisans. All rights reserved.</p>
+                <p>Crafted sustainably in India &bull; Shipped globally</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- --- DYNAMIC MODALS AND DRAWER --- -->
+
+    <!-- Product Detail Modal -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal-card">
+            <button class="modal-close-btn" id="modal-close-btn" aria-label="Close details">
+                <!-- Close SVG -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-content-grid" id="modal-content-details">
+                <!-- Dynamically populated via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Slide-out Drawer -->
+    <div class="cart-drawer-overlay" id="cart-drawer-overlay">
+        <div class="cart-drawer">
+            <div class="cart-drawer-header">
+                <h3 class="cart-drawer-title">Shopping Bag</h3>
+                <button class="cart-drawer-close-btn" id="cart-close-btn" aria-label="Close shopping bag">
+                    <!-- Close SVG -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Cart Items list -->
+            <div class="cart-items-container" id="cart-items-container">
+                <!-- Dynamically populated via JavaScript -->
+            </div>
+            
+            <!-- Cart Footer details -->
+            <div class="cart-drawer-footer" id="cart-drawer-footer">
+                <div class="cart-total-row">
+                    <span class="cart-total-label">Subtotal</span>
+                    <span class="cart-total-amount" id="cart-total-amount">₹0.00</span>
+                </div>
+                <button class="btn btn-primary cart-checkout-btn" id="checkout-start-btn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal-overlay" id="checkout-modal">
+        <div class="modal-card checkout-modal-card">
+            <button class="modal-close-btn" id="checkout-close-btn" aria-label="Close checkout">
+                <!-- Close SVG -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            
+            <div class="checkout-form-container" id="checkout-form-content">
+                <form class="checkout-form" id="checkout-form">
+                    <h2 class="text-center" style="margin-bottom: 2rem;">Shipping & Delivery</h2>
+                    
+                    <div class="form-group">
+                        <label for="checkout-name">Full Name</label>
+                        <input type="text" id="checkout-name" class="form-input" required placeholder="Aarav Sharma">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="checkout-email">Email Address</label>
+                        <input type="email" id="checkout-email" class="form-input" required placeholder="aarav@example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="checkout-address">Shipping Address</label>
+                        <input type="text" id="checkout-address" class="form-input" required placeholder="Flat 402, Block A, Green Meadows Apartments">
+                    </div>
+                    
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label for="checkout-city">City</label>
+                            <input type="text" id="checkout-city" class="form-input" required placeholder="Bengaluru">
+                        </div>
+                        <div>
+                            <label for="checkout-zip">Postal Code</label>
+                            <input type="text" id="checkout-zip" class="form-input" required placeholder="560001" pattern="[0-9]{6}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 2rem;">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Complete Order</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application -->
+    <script src="app.js"></script>
+</body>
+</html>
