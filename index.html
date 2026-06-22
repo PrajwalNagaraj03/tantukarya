@@ -219,7 +219,7 @@
                 <div class="contact-form-wrapper">
                     <h3 class="contact-form-title">Send a Message</h3>
                     <!-- Replace YOUR_FORM_ID with your actual Formspree form ID from formspree.io -->
-                    <form class="contact-form" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="handleContactForm(event)">
+                    <form class="contact-form" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
                         <div class="form-group">
                             <label for="contact-name">Your Name</label>
                             <input type="text" id="contact-name" name="name" class="form-input" required placeholder="Aarav Sharma">
@@ -287,7 +287,7 @@
                     <p class="footer-desc" style="margin-bottom: 1rem; font-size: 0.85rem;">
                         Subscribe for early drops, craft stories, and artisan updates.
                     </p>
-                    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to tantukarya!'); this.reset();">
+                    <form class="newsletter-form" id="newsletter-form">
                         <input type="email" placeholder="Your Email Address" class="newsletter-input" required aria-label="Email Address for newsletter">
                         <button type="submit" class="newsletter-btn" aria-label="Subscribe">
                             <!-- Right Arrow SVG -->
@@ -405,6 +405,6 @@
     </div>
 
     <!-- JavaScript Application -->
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>

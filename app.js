@@ -450,6 +450,22 @@ function setupEventListeners() {
         
         checkoutModal.classList.add("active");
     });
+
+    // Contact Form submit
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', handleContactForm);
+    }
+
+    // Newsletter form
+    const newsletterForm = document.querySelector('.newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for subscribing to tantukarya!');
+            newsletterForm.reset();
+        });
+    }
 }
 
 function handleCheckoutSubmit(e) {
