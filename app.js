@@ -5,7 +5,7 @@ const PRODUCTS = [
         name: "Aditi Indigo Peplum Top",
         category: "tops",
         price: 2450,
-        image: "assets/ajrakh_top.png",
+        image: "/assets/ajrakh_top.png",
         badge: "Best Seller",
         description: "An elegant, breezy peplum top with hand-pressed floral stars. Tailored with a gathered waistline and a flared hem, this Indigo-dyed cotton top transitions beautifully from workday elegance to relaxed weekends.",
         craftSpecs: "Dye: Fermented Organic Indigo & Madder Root; Material: 100% Handloom Cotton; Origin: Block printed by the Khatri family in Kutch, Gujarat.",
@@ -16,7 +16,7 @@ const PRODUCTS = [
         name: "Dhriti Madder Red Tunic",
         category: "tops",
         price: 2800,
-        image: "assets/ajrakh_top.png", // sharing premium image asset
+        image: "/assets/ajrakh_top.png", // sharing premium image asset
         badge: "Classic",
         description: "A traditional high-low tunic featuring intricate white resist lattices overlaid with rich madder root red dye. Offers a relaxed straight-fit shape with side slits for airy comfort.",
         craftSpecs: "Dye: Alizarin (Madder Root) & Iron Rust Black; Material: 100% Khadi Cotton; Origin: Block printed in Rajasthan.",
@@ -27,7 +27,7 @@ const PRODUCTS = [
         name: "Meera Oversized Linen Shirt",
         category: "shirts",
         price: 3200,
-        image: "assets/ajrakh_shirt.png",
+        image: "/assets/ajrakh_shirt.png",
         badge: "Premium",
         description: "Breezy and structured, this oversized women's shirt exhibits the iconic three-layered geometric print of Ajrakh. Crafted from an organic linen-cotton blend and finished with genuine coconut shell buttons.",
         craftSpecs: "Dye: Hard-water resist, Indigo & Pomegranate Rind; Material: 60% Linen, 40% Cotton; Details: Natural woodblock stamps, coconut buttons.",
@@ -38,7 +38,7 @@ const PRODUCTS = [
         name: "Kavya Mandarin Collar Shirt",
         category: "shirts",
         price: 2950,
-        image: "assets/ajrakh_shirt.png", // sharing premium image asset
+        image: "/assets/ajrakh_shirt.png", // sharing premium image asset
         badge: "New Arrival",
         description: "A sleek, contemporary shirt featuring a smart Mandarin collar and detailed cuffs. The fabric showcases a rich trellis print combining turmeric-gold accents with deep indigo grounds.",
         craftSpecs: "Dye: Fermented Indigo & Turmeric/Pomegranate shell; Material: 100% Fine Mercerized Cotton; Origin: Handcrafted in Barmer.",
@@ -49,7 +49,7 @@ const PRODUCTS = [
         name: "Avani Leisure Ochre Shorts",
         category: "shorts",
         price: 1850,
-        image: "assets/ajrakh_shorts.png",
+        image: "/assets/ajrakh_shorts.png",
         badge: "Heritage",
         description: "High-waisted luxury loungewear shorts printed in a stunning geometric mandala pattern. Complete with deep side pockets, a comfortable elasticated back waist, and a decorative tassel drawstring tie.",
         craftSpecs: "Dye: Turmeric (Yellow-Ochre) & Indigo outlines; Material: Soft Cotton-Linen; Fit: Regular high-waisted fit.",
@@ -60,7 +60,7 @@ const PRODUCTS = [
         name: "Nisha High-Waisted Indigo Shorts",
         category: "shorts",
         price: 1650,
-        image: "assets/ajrakh_shorts.png", // sharing premium image asset
+        image: "/assets/ajrakh_shorts.png", // sharing premium image asset
         badge: "Resort Wear",
         description: "Minimalist shorts displaying delicate repeating star-mesh stamps. Lightweight, breathable, and pre-washed for exceptional softness, these shorts are the perfect companion for sunny resort days.",
         craftSpecs: "Dye: Organic Indigo vat fermentation; Material: 100% Sustainable Cotton; Pockets: Two lateral slit pockets.",
@@ -484,4 +484,63 @@ function handleCheckoutSubmit(e) {
     cart = [];
     saveCartToLocalStorage();
     updateCartUI();
+}
+
+// --- CONTACT FORM HANDLER (Formspree) ---
+async function handleContactForm(e) {
+    e.preventDefault();
+
+    const form = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('contact-submit-btn');
+    const successMsg = document.getElementById('contact-success-msg');
+
+    // Show loading state
+    const originalBtnHTML = submitBtn.innerHTML;
+    submitBtn.innerHTML = `
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:0.5rem; animation: spin 1s linear infinite;">
+            <line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line>
+            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+            <line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line>
+            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+        </svg> Sending...`;
+    submitBtn.disabled = true;
+    successMsg.textContent = '';
+    successMsg.style.color = '';
+
+    // Add spinner animation if not present
+    if (!document.getElementById('contact-spin-style')) {
+        const style = document.createElement('style');
+        style.id = 'contact-spin-style';
+        style.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
+        document.head.appendChild(style);
+    }
+
+    try {
+        const formData = new FormData(form);
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+            successMsg.textContent = '✦ Your message has been sent! We\'ll get back to you within 24 hours.';
+            successMsg.style.color = 'var(--color-success)';
+            form.reset();
+        } else {
+            const data = await response.json();
+            if (data && data.errors) {
+                successMsg.textContent = data.errors.map(err => err.message).join(', ');
+            } else {
+                successMsg.textContent = 'Oops! Something went wrong. Please email us directly at hello@tantukarya.com';
+            }
+            successMsg.style.color = 'var(--color-primary-madder)';
+        }
+    } catch (error) {
+        successMsg.textContent = 'Could not send message. Please try WhatsApp or email us directly.';
+        successMsg.style.color = 'var(--color-primary-madder)';
+    } finally {
+        submitBtn.innerHTML = originalBtnHTML;
+        submitBtn.disabled = false;
+    }
 }
