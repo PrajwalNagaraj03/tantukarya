@@ -42,6 +42,13 @@
                     </svg>
                     <span class="cart-badge" id="cart-badge-count">0</span>
                 </button>
+                <button class="account-btn" id="account-btn" aria-label="Customer account">
+                    <svg class="account-btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span class="account-btn-text" id="account-btn-text">Login</span>
+                </button>
             </div>
         </div>
     </header>
@@ -401,9 +408,15 @@
                                 <input type="text" id="shipping-name" class="form-input" required placeholder="Aarav Sharma">
                             </div>
                             
-                            <div class="form-group">
-                                <label for="shipping-email">Email Address</label>
-                                <input type="email" id="shipping-email" class="form-input" required placeholder="aarav@example.com">
+                            <div class="form-group-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="shipping-email">Email Address</label>
+                                    <input type="email" id="shipping-email" class="form-input" required placeholder="aarav@example.com">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="shipping-phone">Phone Number</label>
+                                    <input type="tel" id="shipping-phone" class="form-input" required placeholder="9876543210" pattern="[0-9]{10}" title="Please enter a 10-digit mobile number">
+                                </div>
                             </div>
                             
                             <div class="form-group">
@@ -675,7 +688,16 @@
                 </div>
             </div>
             
-            <div class="admin-panel-layout">
+            <div class="admin-tabs">
+                <button class="admin-tab-btn active" id="tab-btn-expenses">Expenses</button>
+                <button class="admin-tab-btn" id="tab-btn-products">Products</button>
+                <button class="admin-tab-btn" id="tab-btn-stocks">Stocks</button>
+                <button class="admin-tab-btn" id="tab-btn-pos">POS</button>
+                <button class="admin-tab-btn" id="tab-btn-orders">Orders</button>
+            </div>
+            
+            <!-- Expenses Tab Content -->
+            <div class="admin-panel-layout" id="tab-expenses-content">
                 <!-- Left Pane: Add Expense Form -->
                 <div class="admin-form-pane">
                     <form id="admin-expense-form">
@@ -748,11 +770,364 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Products Tab Content -->
+            <div class="admin-panel-layout" id="tab-products-content" style="display: none;">
+                <!-- Left Pane: Add Dynamic Product Form -->
+                <div class="admin-form-pane">
+                    <form id="admin-product-form">
+                        <h3 class="admin-pane-title">Add New Product</h3>
+                        
+                        <div class="form-group">
+                            <label for="product-id-input">Product ID (Unique Slug)</label>
+                            <input type="text" id="product-id-input" class="form-input" required placeholder="e.g. top-meera-blue" pattern="[a-z0-9\-]+">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="product-name-input">Product Name</label>
+                            <input type="text" id="product-name-input" class="form-input" required placeholder="e.g. Meera Blue Cotton Top">
+                        </div>
+                        
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                            <div class="form-group">
+                                <label for="product-category-input">Category</label>
+                                <select id="product-category-input" class="form-input" required>
+                                    <option value="tops">Tops</option>
+                                    <option value="shirts">Shirts</option>
+                                    <option value="shorts">Shorts</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-price-input">Price (₹)</label>
+                                <input type="number" id="product-price-input" class="form-input" required placeholder="2800" min="1">
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; align-items: start;">
+                            <div class="form-group">
+                                <label for="product-image-file">Product Image File</label>
+                                <input type="file" id="product-image-file" class="form-input" accept="image/*" required style="padding: 0.35rem 0.5rem; font-size: 0.78rem;">
+                                <div id="product-image-preview-container" style="display: none; margin-top: 0.5rem; text-align: left;">
+                                    <img id="product-image-preview" src="" alt="Preview" style="max-width: 60px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid var(--color-border);">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-badge-input">Badge (Optional)</label>
+                                <input type="text" id="product-badge-input" class="form-input" placeholder="e.g. New Arrival, Classic">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="product-sizes-input">Sizes (Comma separated)</label>
+                            <input type="text" id="product-sizes-input" class="form-input" required placeholder="e.g. S,M,L,XL" value="XS,S,M,L,XL">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="product-desc-input">Description</label>
+                            <textarea id="product-desc-input" class="form-input" style="min-height: 60px; resize: vertical;" required placeholder="Enter product details..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="product-specs-input">Craft Specifications</label>
+                            <textarea id="product-specs-input" class="form-input" style="min-height: 60px; resize: vertical;" required placeholder="Dye, material, origin specifications..."></textarea>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label for="product-stock-input">Initial Stock per Size</label>
+                            <input type="number" id="product-stock-input" class="form-input" required placeholder="10" min="0" value="10">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Save Product</button>
+                    </form>
+                </div>
+                
+                <!-- Right Pane: Products Catalog List -->
+                <div class="admin-list-pane">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <h3 class="admin-pane-title" style="margin: 0; border: none; padding: 0;">Products Catalog</h3>
+                    </div>
+                    
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Details</th>
+                                    <th style="width: 50px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-table-body">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                        <div class="admin-empty-table" id="products-empty-state">
+                            <span class="empty-state-icon">✦</span>
+                            <p>No products in database.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-panel-footer">
+                        <button type="button" class="btn btn-outline" id="admin-sign-out-products" style="border-color: var(--color-primary-madder); color: var(--color-primary-madder);">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stocks Tab Content -->
+            <div class="admin-full-layout" id="tab-stocks-content" style="display: none;">
+                <div class="stock-filters-bar">
+                    <div class="stock-filters-left">
+                        <input type="text" id="stock-search" placeholder="Search by name or ID..." class="form-input" style="max-width: 250px; margin-bottom: 0;">
+                        <select id="stock-category-filter" class="form-input" style="max-width: 150px; margin-bottom: 0;">
+                            <option value="all">All Categories</option>
+                            <option value="tops">Tops</option>
+                            <option value="shirts">Shirts</option>
+                            <option value="shorts">Shorts</option>
+                        </select>
+                        <select id="stock-status-filter" class="form-input" style="max-width: 180px; margin-bottom: 0;">
+                            <option value="all">All Statuses</option>
+                            <option value="low">Low Stock (≤ 3)</option>
+                            <option value="out">Out of Stock (0)</option>
+                        </select>
+                    </div>
+                    <h3 class="admin-pane-title" style="margin: 0; border: none; padding: 0;">Stocks Manager</h3>
+                </div>
+
+                <div class="stock-cards-container">
+                    <div class="stock-cards-grid" id="stock-cards-grid">
+                        <!-- Populated dynamically -->
+                    </div>
+                    <div class="admin-empty-table" id="stock-empty-state">
+                        <span class="empty-state-icon">✦</span>
+                        <p>No products found matching filters.</p>
+                    </div>
+                </div>
+
+                <div class="admin-panel-footer" style="margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+                    <button type="button" class="btn btn-outline" id="admin-sign-out-stocks" style="border-color: var(--color-primary-madder); color: var(--color-primary-madder);">Sign Out</button>
+                </div>
+            </div>
+
+            <!-- POS Tab Content -->
+            <div class="admin-full-layout" id="tab-pos-content" style="display: none;">
+                <div class="admin-centered-form-wrapper">
+                    <form id="admin-pos-form">
+                        <h3 class="admin-pane-title">Point of Sale (POS)</h3>
+                        
+                        <div class="form-group">
+                            <label for="pos-customer-name">Customer Name</label>
+                            <input type="text" id="pos-customer-name" class="form-input" required placeholder="Walk-in Customer" value="Walk-in Customer">
+                        </div>
+                        
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr; gap: 0.75rem;">
+                            <div class="form-group">
+                                <label for="pos-customer-email">Customer Email (Optional)</label>
+                                <input type="email" id="pos-customer-email" class="form-input" placeholder="customer@email.com">
+                            </div>
+                        </div>
+
+                        <div style="border-top: 1px dashed var(--color-border); margin: 1rem 0; padding-top: 1rem;">
+                            <h4 style="font-family: var(--font-heading); margin-bottom: 0.75rem; font-size: 0.95rem; color: var(--color-primary-indigo-dark);">Add Items</h4>
+                            
+                            <div class="form-row" style="display: grid; grid-template-columns: 2fr 1fr; gap: 0.5rem;">
+                                <div class="form-group">
+                                    <label for="pos-product-select">Product</label>
+                                    <select id="pos-product-select" class="form-input">
+                                        <!-- Populated dynamically -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pos-size-select">Size</label>
+                                    <select id="pos-size-select" class="form-input">
+                                        <!-- Populated dynamically -->
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem;">
+                                <div class="form-group">
+                                    <label for="pos-qty-input">Quantity</label>
+                                    <input type="number" id="pos-qty-input" class="form-input" min="1" value="1">
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: flex-end;">
+                                    <button type="button" id="pos-add-item-btn" class="btn btn-outline" style="width: 100%; height: 38px; display: flex; align-items: center; justify-content: center; gap: 0.25rem;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        Add Item
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Current Offline Cart Items -->
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="font-weight: 700; margin-bottom: 0.5rem; display: block;">Items List</label>
+                            <div id="pos-cart-container" style="max-height: 120px; overflow-y: auto; border: 1px solid var(--color-border); border-radius: 4px; padding: 0.5rem; background: var(--color-bg-sand);">
+                                <div style="text-align: center; color: #8A8078; font-size: 0.8rem; padding: 0.5rem 0;">No items added yet.</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-weight: bold; font-size: 0.95rem; color: var(--color-primary-madder);">
+                                <span>Total Price:</span>
+                                <span id="pos-cart-total">₹0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Payment Method</label>
+                            <select id="pos-payment-method" class="form-input">
+                                <option value="cash">Cash</option>
+                                <option value="upi">UPI / Scanner</option>
+                                <option value="card">Credit/Debit Card</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Complete Offline Sale</button>
+                    </form>
+                    
+                    <div class="admin-panel-footer" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+                        <button type="button" class="btn btn-outline" id="admin-sign-out-pos" style="border-color: var(--color-primary-madder); color: var(--color-primary-madder);">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Tab Content -->
+            <div class="admin-full-layout" id="tab-orders-content" style="display: none;">
+                <div class="admin-centered-table-wrapper">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <h3 class="admin-pane-title" style="margin: 0; border: none; padding: 0;">Sales & Order History</h3>
+                    </div>
+                    
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Order No</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Total</th>
+                                    <th style="width: 80px;">Invoice</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-table-body">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                        <div class="admin-empty-table" id="orders-empty-state">
+                            <span class="empty-state-icon">✦</span>
+                            <p>No orders recorded yet.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-panel-footer" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+                        <button type="button" class="btn btn-outline" id="admin-sign-out-orders" style="border-color: var(--color-primary-madder); color: var(--color-primary-madder);">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Auth Modal -->
+    <div class="modal-overlay" id="customer-auth-modal">
+        <div class="modal-card customer-auth-card" style="max-width: 500px; transition: max-width 0.3s ease;">
+            <button class="modal-close-btn" id="customer-auth-close" aria-label="Close login">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            
+            <!-- Login View -->
+            <div class="customer-auth-content" id="customer-login-view">
+                <div class="customer-auth-icon" style="font-size: 2rem; text-align: center; color: var(--color-primary-indigo); margin-bottom: 0.5rem;">✦</div>
+                <h2 class="text-center" style="margin-bottom: 0.5rem; font-family: var(--font-heading);">Welcome Back</h2>
+                <p class="text-muted text-center" style="font-size: 0.85rem; margin-bottom: 1.5rem;">Log in to your tantukarya account</p>
+                
+                <form id="customer-login-form">
+                    <div class="form-group">
+                        <label for="cust-login-email">Email Address</label>
+                        <input type="email" id="cust-login-email" class="form-input" required placeholder="Enter your email">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label for="cust-login-password">Password</label>
+                        <input type="password" id="cust-login-password" class="form-input" required placeholder="••••••••">
+                    </div>
+                    <div id="customer-login-error" class="admin-error-msg" style="color: var(--color-primary-madder); font-size: 0.8rem; font-weight: 600; margin-bottom: 1rem; text-align: center; min-height: 1.2rem;"></div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">Log In</button>
+                    <p class="text-center" style="font-size: 0.82rem; color: #8A8078;">
+                        Don't have an account? <a href="#" id="go-to-signup" style="color: var(--color-primary-indigo); font-weight: 600;">Create Account</a>
+                    </p>
+                </form>
+            </div>
+
+            <!-- Sign Up View -->
+            <div class="customer-auth-content" id="customer-signup-view" style="display: none;">
+                <div class="customer-auth-icon" style="font-size: 2rem; text-align: center; color: var(--color-primary-indigo); margin-bottom: 0.5rem;">✦</div>
+                <h2 class="text-center" style="margin-bottom: 0.5rem; font-family: var(--font-heading);">Create Account</h2>
+                <p class="text-muted text-center" style="font-size: 0.85rem; margin-bottom: 1.5rem;">Join tantukarya and save your details</p>
+                
+                <form id="customer-signup-form">
+                    <div class="form-group">
+                        <label for="cust-signup-name">Full Name</label>
+                        <input type="text" id="cust-signup-name" class="form-input" required placeholder="Aarav Sharma">
+                    </div>
+                    <div class="form-group">
+                        <label for="cust-signup-email">Email Address</label>
+                        <input type="email" id="cust-signup-email" class="form-input" required placeholder="aarav@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="cust-signup-phone">Phone Number</label>
+                        <input type="tel" id="cust-signup-phone" class="form-input" required placeholder="9876543210" pattern="[0-9]{10}" title="Please enter a 10-digit mobile number">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label for="cust-signup-password">Password</label>
+                        <input type="password" id="cust-signup-password" class="form-input" required placeholder="••••••••">
+                    </div>
+                    <div id="customer-signup-error" class="admin-error-msg" style="color: var(--color-primary-madder); font-size: 0.8rem; font-weight: 600; margin-bottom: 1rem; text-align: center; min-height: 1.2rem;"></div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">Create Account</button>
+                    <p class="text-center" style="font-size: 0.82rem; color: #8A8078;">
+                        Already have an account? <a href="#" id="go-to-login" style="color: var(--color-primary-indigo); font-weight: 600;">Log In</a>
+                    </p>
+                </form>
+            </div>
+
+            <!-- Profile View -->
+            <div class="customer-auth-content" id="customer-profile-view" style="display: none; width: 100%;">
+                <div class="customer-auth-icon" style="font-size: 2rem; text-align: center; color: var(--color-primary-indigo); margin-bottom: 0.5rem;">✦</div>
+                <h2 class="text-center" style="margin-bottom: 0.25rem; font-family: var(--font-heading);" id="profile-welcome-title">My Profile</h2>
+                <p class="text-muted text-center" style="font-size: 0.85rem; margin-bottom: 1.5rem;">Manage details and view your order history</p>
+                
+                <div class="profile-details-card" style="background: var(--color-bg-sand); border: 1px solid var(--color-border); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; font-size: 0.85rem;">
+                        <div>
+                            <span class="text-muted" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.15rem;">Email</span>
+                            <strong style="color: var(--color-primary-indigo-dark);" id="profile-email-text">-</strong>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.15rem;">Phone</span>
+                            <strong style="color: var(--color-primary-indigo-dark);" id="profile-phone-text">-</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-family: var(--font-heading); font-size: 1rem; border-bottom: 1px dashed var(--color-border); padding-bottom: 0.5rem; margin-bottom: 0.75rem; color: var(--color-primary-indigo-dark);">My Past Orders</h3>
+                
+                <div id="customer-profile-orders-container" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--color-border); border-radius: 6px; background: var(--color-bg-paper); margin-bottom: 1.5rem;">
+                    <!-- Dynamically populated or empty state -->
+                    <div style="text-align: center; color: #8A8078; padding: 2rem; font-size: 0.85rem;">No orders found.</div>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-outline" id="customer-profile-close-btn" style="padding: 0.5rem 1.25rem;">Close</button>
+                    <button type="button" class="btn btn-primary" id="customer-logout-btn" style="background-color: var(--color-primary-madder); border-color: var(--color-primary-madder); color: #fff; padding: 0.5rem 1.25rem;">Log Out</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Toast Notification Container -->
     <div class="toast-container" id="toast-container"></div>
+
+    <!-- jsPDF PDF Invoice Generator Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <!-- JavaScript Application -->
     <script type="module" src="app.js"></script>
