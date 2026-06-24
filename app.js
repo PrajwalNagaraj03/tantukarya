@@ -65,6 +65,39 @@ const PRODUCTS = [
         description: "Minimalist shorts displaying delicate repeating star-mesh stamps. Lightweight, breathable, and pre-washed for exceptional softness, these shorts are the perfect companion for sunny resort days.",
         craftSpecs: "Dye: Organic Indigo vat fermentation; Material: 100% Sustainable Cotton; Pockets: Two lateral slit pockets.",
         sizes: ["S", "M", "L", "XL"]
+    },
+    {
+        id: "top-maya",
+        name: "Maya Ajrakh Tube Corset Top",
+        category: "tops",
+        price: 2200,
+        image: "/assets/ajrakh_top.png",
+        badge: "Trending",
+        description: "Inspired by modern street fashion, this structured tube corset top is crafted from handblock-printed canvas cotton. Styled with standard side boning and an invisible back zipper for a beautiful, secure silhouette.",
+        craftSpecs: "Dye: Fermented Indigo & Iron Rust; Material: 100% Cotton Canvas; Details: boning structure, back zipper closure.",
+        sizes: ["XS", "S", "M", "L"]
+    },
+    {
+        id: "top-nandini",
+        name: "Nandini Hand-Embroidered Indigo Dress",
+        category: "tops",
+        price: 3100,
+        image: "/assets/ajrakh_top.png",
+        badge: "Artisan Special",
+        description: "A beautiful A-line dress featuring hand-embroidered Kantha stitching and mirror-work detailing around the split neckline. Hand-block printed in deep indigo with natural resist margins, this piece highlights the exquisite skill of rural women artisans.",
+        craftSpecs: "Craft: Mirror embroidery & Ajrakh blockprint; Material: 100% Khadi Cotton; Origin: Collaboration with Gujarat artisan collectives.",
+        sizes: ["S", "M", "L", "XL"]
+    },
+    {
+        id: "top-kriti",
+        name: "Kriti Ajrakh Tiered Maxi Dress",
+        category: "tops",
+        price: 3600,
+        image: "/assets/ajrakh_top.png",
+        badge: "New Arrival",
+        description: "A gorgeous three-tiered maxi dress with a halter neckline and delicate gold border highlights. Tailored in soft cotton mulmul, naturally dyed in madder root red and fermented turmeric.",
+        craftSpecs: "Dye: Alizarin Red & Organic Turmeric; Material: 100% Cotton Mulmul; Detail: Tiered flare, halter back tie.",
+        sizes: ["XS", "S", "M", "L", "XL"]
     }
 ];
 
@@ -84,7 +117,7 @@ let posCart = [];
 
 // Checkout State
 let checkoutStep = 1;
-let appliedPromo = false;
+let appliedPromo = 0;
 let customerDetails = { name: "", email: "", phone: "", address: "", city: "", zip: "" };
 let currentCustomer = null;
 let selectedPaymentMethod = "card";
@@ -123,6 +156,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderProducts();
     setupEventListeners();
     updateCartUI();
+    
+    // Non-admin enhancements initialization
+    setupCraftTabListeners();
+    setupShopFilters();
+    setupNewsletterListener();
+    setupTestimonialSlider();
+    setupSizeGuideModal();
 });
 
 // --- DYNAMIC CATALOG & INVENTORY APIs ---
@@ -195,9 +235,12 @@ async function initializeAppCatalogAndInventory() {
     // 1. Fetch products catalog
     let dbProducts = await fetchProducts();
     
-    // Seed default template if DB/LocalStorage is empty
-    if (dbProducts.length === 0) {
-        dbProducts = PRODUCTS.map(p => ({
+    // Seed template if empty or if new products are added
+    const dbIds = new Set(dbProducts.map(p => p.id));
+    const missingTemplateProducts = PRODUCTS.filter(p => !dbIds.has(p.id));
+    
+    if (dbProducts.length === 0 || missingTemplateProducts.length > 0) {
+        const newSeedRows = missingTemplateProducts.map(p => ({
             id: p.id,
             name: p.name,
             category: p.category,
@@ -209,6 +252,8 @@ async function initializeAppCatalogAndInventory() {
             sizes: p.sizes.join(",")
         }));
         
+        dbProducts = [...dbProducts, ...newSeedRows];
+        
         if (SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey) {
             try {
                 await fetch(`${SUPABASE_CONFIG.url}/rest/v1/products`, {
@@ -219,10 +264,10 @@ async function initializeAppCatalogAndInventory() {
                         "Content-Type": "application/json",
                         "Prefer": "return=minimal"
                     },
-                    body: JSON.stringify(dbProducts)
+                    body: JSON.stringify(newSeedRows)
                 });
             } catch (err) {
-                console.error("Failed to seed products catalog in Supabase:", err);
+                console.error("Failed to seed new products catalog in Supabase:", err);
             }
         } else {
             localStorage.setItem("tantukarya_products", JSON.stringify(dbProducts));
@@ -301,12 +346,53 @@ async function initializeAppCatalogAndInventory() {
 
 // --- RENDER FUNCTIONS ---
 function renderProducts() {
+    if (!productGrid) return;
     productGrid.innerHTML = "";
 
-    const filteredProducts = activeFilter === "all"
-        ? productsCatalog
-        : productsCatalog.filter(p => p.category === activeFilter);
+    const searchInput = document.getElementById("product-search-input");
+    const searchQuery = searchInput ? searchInput.value.trim().toLowerCase() : "";
 
+    // 1. Filter by category AND search query
+    let filteredProducts = productsCatalog.filter(product => {
+        const matchesCategory = activeFilter === "all" || product.category === activeFilter;
+        const matchesSearch = !searchQuery || 
+                              product.name.toLowerCase().includes(searchQuery) || 
+                              product.description.toLowerCase().includes(searchQuery) ||
+                              product.category.toLowerCase().includes(searchQuery);
+        return matchesCategory && matchesSearch;
+    });
+
+    // 2. Sort products
+    const sortSelect = document.getElementById("product-sort-select");
+    const sortVal = sortSelect ? sortSelect.value : "recommended";
+    
+    if (sortVal === "price-asc") {
+        filteredProducts.sort((a, b) => a.price - b.price);
+    } else if (sortVal === "price-desc") {
+        filteredProducts.sort((a, b) => b.price - a.price);
+    } else if (sortVal === "name-asc") {
+        filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+    } // "recommended" maintains natural catalog order
+
+    // 3. Handle empty state
+    if (filteredProducts.length === 0) {
+        productGrid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; color: #8A8078;">
+                <span style="font-size: 2rem; display: block; margin-bottom: 1rem;">✦</span>
+                <p>No apparel matches your search filter.</p>
+                <button type="button" class="btn btn-outline" id="clear-search-link-btn" style="margin-top: 1rem; padding: 0.5rem 1.5rem; font-size: 0.8rem;">Clear Filters</button>
+            </div>
+        `;
+        document.getElementById("clear-search-link-btn")?.addEventListener("click", () => {
+            if (searchInput) searchInput.value = "";
+            const clearBtn = document.getElementById("search-clear-btn");
+            if (clearBtn) clearBtn.classList.remove("visible");
+            renderProducts();
+        });
+        return;
+    }
+
+    // 4. Render cards
     filteredProducts.forEach(product => {
         const sizes = product.sizes;
         const totalStock = sizes.reduce((sum, sz) => sum + (inventoryStore[`${product.id}_${sz}`] || 0), 0);
@@ -381,8 +467,13 @@ function openProductModal(productId) {
             <div class="modal-price">₹${product.price.toLocaleString("en-IN")}</div>
             
             <p class="modal-desc">${product.description}</p>
-            
-            <div class="modal-options-title">Select Size</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <div class="modal-options-title" style="margin-bottom: 0;">Select Size</div>
+                <button type="button" class="size-guide-toggle-btn" id="size-guide-toggle-btn" style="font-size: 0.8rem; font-weight: 600; color: var(--color-primary-madder); text-decoration: underline; cursor: pointer; display: flex; align-items: center; gap: 0.25rem;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 2px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+                    Size Guide
+                </button>
+            </div>
             <div class="modal-size-selector" id="modal-size-chips">
                 ${product.sizes.map(size => {
                     const isOutOfStock = (inventoryStore[`${product.id}_${size}`] || 0) <= 0;
@@ -409,6 +500,14 @@ function openProductModal(productId) {
     `;
 
     updateModalAddToCartButtonState(product, selectedSizeForModal);
+
+    // Size Guide trigger inside product details modal
+    const sizeGuideBtn = modalContentDetails.querySelector("#size-guide-toggle-btn");
+    if (sizeGuideBtn) {
+        sizeGuideBtn.addEventListener("click", () => {
+            document.getElementById("size-guide-modal").classList.add("active");
+        });
+    }
 
     // Hook size chip listeners inside modal
     const sizeChips = modalContentDetails.querySelectorAll(".size-chip");
@@ -612,6 +711,8 @@ function closeModals() {
     checkoutModal.classList.remove("active");
     document.getElementById("admin-login-modal").classList.remove("active");
     document.getElementById("admin-panel-modal").classList.remove("active");
+    document.getElementById("size-guide-modal")?.classList.remove("active");
+    document.getElementById("coupon-modal")?.classList.remove("active");
     selectedProductForModal = null;
     selectedSizeForModal = null;
 }
@@ -694,7 +795,7 @@ function setupEventListeners() {
         closeCartDrawer();
 
         // Reset promo & step
-        appliedPromo = false;
+        appliedPromo = 0;
         const promoInput = document.getElementById("promo-code-input");
         if (promoInput) promoInput.value = "";
         const promoFeedback = document.getElementById("promo-feedback");
@@ -826,13 +927,24 @@ function setupEventListeners() {
             const promoFeedback = document.getElementById("promo-feedback");
             const code = promoInput.value.trim().toUpperCase();
 
-            if (code === "AJRAKH10") {
-                if (appliedPromo) {
+            let discountRate = 0;
+            let successMessage = "";
+
+            if (code === "AJRAKH10" || code === "TANTU10") {
+                discountRate = 0.10;
+                successMessage = "10% discount applied successfully!";
+            } else if (code === "TANTU15") {
+                discountRate = 0.15;
+                successMessage = "15% discount applied successfully!";
+            }
+
+            if (discountRate > 0) {
+                if (appliedPromo > 0) {
                     promoFeedback.textContent = "Promo code already applied!";
                     promoFeedback.className = "promo-msg error";
                 } else {
-                    appliedPromo = true;
-                    promoFeedback.textContent = "10% discount applied successfully!";
+                    appliedPromo = discountRate;
+                    promoFeedback.textContent = successMessage;
                     promoFeedback.className = "promo-msg success";
                     updateCheckoutSummaryUI();
                 }
@@ -1345,7 +1457,7 @@ function updateCheckoutSummaryUI() {
     });
 
     const subtotal = getCartTotal();
-    const discount = appliedPromo ? (subtotal * 0.10) : 0;
+    const discount = Math.round(subtotal * appliedPromo);
 
     let shipping = (subtotal - discount >= 3000) ? 0 : 150;
     if (selectedPaymentMethod === "cod") {
@@ -1358,8 +1470,11 @@ function updateCheckoutSummaryUI() {
     document.getElementById("summary-subtotal").textContent = `₹${subtotal.toLocaleString("en-IN")}`;
 
     const discountRow = document.getElementById("summary-discount-row");
-    if (appliedPromo) {
+    if (appliedPromo > 0) {
         discountRow.style.display = "flex";
+        const pct = Math.round(appliedPromo * 100);
+        const labelSpan = discountRow.querySelector("span:first-child");
+        if (labelSpan) labelSpan.textContent = `Discount (${pct}%)`;
         document.getElementById("summary-discount").textContent = `-₹${discount.toLocaleString("en-IN")}`;
     } else {
         discountRow.style.display = "none";
@@ -1478,7 +1593,7 @@ function processOrderPayment() {
 async function completeAndRenderSuccess() {
     const orderNumber = "TK-" + Math.floor(100000 + Math.random() * 900000);
     const subtotal = getCartTotal();
-    const discount = appliedPromo ? (subtotal * 0.10) : 0;
+    const discount = Math.round(subtotal * appliedPromo);
 
     let shipping = (subtotal - discount >= 3000) ? 0 : 150;
     let paymentText = "";
@@ -1570,9 +1685,9 @@ async function completeAndRenderSuccess() {
                         <span>Subtotal</span>
                         <span>₹${subtotal.toLocaleString("en-IN")}</span>
                     </div>
-                    ${appliedPromo ? `
+                    ${appliedPromo > 0 ? `
                     <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--color-success); font-weight: 600;">
-                        <span>Discount (Promo Code)</span>
+                        <span>Discount (Promo Code - ${Math.round(appliedPromo * 100)}%)</span>
                         <span>-₹${discount.toLocaleString("en-IN")}</span>
                     </div>` : ''}
                     <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #6E6962;">
@@ -3517,6 +3632,283 @@ async function renderCustomerOrdersProfile() {
     } catch (err) {
         console.error("Error loading customer orders profile:", err);
         container.innerHTML = `<div style="text-align: center; color: var(--color-primary-madder); padding: 2rem; font-size: 0.85rem; font-weight: 600;">Error loading orders.</div>`;
+    }
+}
+
+// --- NON-ADMIN SCREEN ENHANCEMENTS HELPERS ---
+
+// 1. Stepped Interactive Craft Explorer
+function setupCraftTabListeners() {
+    const tabButtons = document.querySelectorAll(".craft-tab-btn");
+    const contentSteps = document.querySelectorAll(".craft-content-step");
+    const badgeStamp = document.querySelector(".craft-badge-stamp");
+    
+    const stampTexts = {
+        "1": "100%<br>Natural<br>Dyes",
+        "2": "Iron<br>Rust<br>Black",
+        "3": "Lime<br>& Clay<br>Resist",
+        "4": "Indigo<br>Vat<br>Dipped",
+        "5": "Desert<br>Sun<br>Bake"
+    };
+    
+    tabButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const stepNum = btn.getAttribute("data-step");
+            
+            // Update active tab button
+            tabButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            
+            // Update active step content panel with transition classes
+            contentSteps.forEach(step => {
+                step.classList.remove("active");
+            });
+            
+            const targetStep = document.getElementById(`craft-step-${stepNum}`);
+            if (targetStep) {
+                targetStep.classList.add("active");
+            }
+            
+            // Update stamp text dynamically
+            if (badgeStamp && stampTexts[stepNum]) {
+                badgeStamp.innerHTML = stampTexts[stepNum];
+            }
+        });
+    });
+}
+
+// 2. Shop search box & sort select
+function setupShopFilters() {
+    const searchInput = document.getElementById("product-search-input");
+    const clearBtn = document.getElementById("search-clear-btn");
+    const sortSelect = document.getElementById("product-sort-select");
+    
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            if (clearBtn) {
+                if (searchInput.value.length > 0) {
+                    clearBtn.classList.add("visible");
+                } else {
+                    clearBtn.classList.remove("visible");
+                }
+            }
+            renderProducts();
+        });
+    }
+    
+    if (clearBtn && searchInput) {
+        clearBtn.addEventListener("click", () => {
+            searchInput.value = "";
+            clearBtn.classList.remove("visible");
+            renderProducts();
+        });
+    }
+    
+    if (sortSelect) {
+        sortSelect.addEventListener("change", () => {
+            renderProducts();
+        });
+    }
+}
+
+// 3. Testimonials Section Auto-play Carousel Slider
+function setupTestimonialSlider() {
+    const slides = document.querySelectorAll(".testimonial-slide");
+    const dots = document.querySelectorAll(".dot-btn");
+    const prevBtn = document.getElementById("testimonial-prev-btn");
+    const nextBtn = document.getElementById("testimonial-next-btn");
+    
+    if (slides.length === 0) return;
+    
+    let currentIndex = 0;
+    let slideInterval;
+    
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove("active"));
+        dots.forEach(dot => dot.classList.remove("active"));
+        
+        currentIndex = (index + slides.length) % slides.length;
+        
+        slides[currentIndex].classList.add("active");
+        if (dots[currentIndex]) {
+            dots[currentIndex].classList.add("active");
+        }
+    }
+    
+    function nextSlide() {
+        showSlide(currentIndex + 1);
+    }
+    
+    function prevSlide() {
+        showSlide(currentIndex - 1);
+    }
+    
+    function startInterval() {
+        stopInterval();
+        slideInterval = setInterval(nextSlide, 5000);
+    }
+    
+    function stopInterval() {
+        if (slideInterval) clearInterval(slideInterval);
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener("click", () => {
+            prevSlide();
+            startInterval();
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener("click", () => {
+            nextSlide();
+            startInterval();
+        });
+    }
+    
+    dots.forEach(dot => {
+        dot.addEventListener("click", () => {
+            const index = parseInt(dot.getAttribute("data-index"));
+            showSlide(index);
+            startInterval();
+        });
+    });
+    
+    // Start autoplay
+    startInterval();
+    
+    // Pause on hover
+    const container = document.querySelector(".testimonials-slider-container");
+    if (container) {
+        container.addEventListener("mouseenter", stopInterval);
+        container.addEventListener("mouseleave", startInterval);
+    }
+}
+
+// 4. Newsletter Subscription & Coupon Code Popup
+function setupNewsletterListener() {
+    const newsletterForm = document.getElementById("newsletter-form");
+    if (newsletterForm) {
+        newsletterForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const emailInput = newsletterForm.querySelector(".newsletter-input");
+            const email = emailInput ? emailInput.value.trim() : "";
+            
+            if (email) {
+                // Show notification success
+                showNotification("Thank you for subscribing! Your discount reward is ready.", "success");
+                
+                // Reset form
+                newsletterForm.reset();
+                
+                // Open coupon modal
+                const couponModal = document.getElementById("coupon-modal");
+                if (couponModal) {
+                    couponModal.classList.add("active");
+                    triggerConfettiSparkles();
+                }
+            }
+        });
+    }
+
+    // Coupon Close actions
+    const couponClose = document.getElementById("coupon-close-btn");
+    if (couponClose) {
+        couponClose.addEventListener("click", () => {
+            document.getElementById("coupon-modal").classList.remove("active");
+        });
+    }
+
+    const couponModal = document.getElementById("coupon-modal");
+    if (couponModal) {
+        couponModal.addEventListener("click", (e) => {
+            if (e.target === couponModal) {
+                couponModal.classList.remove("active");
+            }
+        });
+    }
+
+    // Coupon Copy Button Logic
+    const copyBtn = document.getElementById("coupon-copy-btn");
+    const codeText = document.getElementById("coupon-code-text");
+    if (copyBtn && codeText) {
+        copyBtn.addEventListener("click", () => {
+            navigator.clipboard.writeText(codeText.textContent.trim()).then(() => {
+                copyBtn.textContent = "Copied!";
+                copyBtn.classList.add("copied");
+                showNotification("Promo code TANTU15 copied to clipboard!", "success");
+                
+                setTimeout(() => {
+                    copyBtn.textContent = "Copy Code";
+                    copyBtn.classList.remove("copied");
+                }, 2500);
+            }).catch(err => {
+                console.error("Copy failed: ", err);
+                showNotification("Failed to copy code. Please copy manually.", "error");
+            });
+        });
+    }
+}
+
+// 5. Size Guide Modal trigger & dismiss
+function setupSizeGuideModal() {
+    const sizeGuideCloseBtn = document.getElementById("size-guide-close-btn");
+    if (sizeGuideCloseBtn) {
+        sizeGuideCloseBtn.addEventListener("click", () => {
+            document.getElementById("size-guide-modal").classList.remove("active");
+        });
+    }
+    const sizeGuideModal = document.getElementById("size-guide-modal");
+    if (sizeGuideModal) {
+        sizeGuideModal.addEventListener("click", (e) => {
+            if (e.target === sizeGuideModal) {
+                sizeGuideModal.classList.remove("active");
+            }
+        });
+    }
+}
+
+// Sparkles / Confetti Generator inside coupon modal using HSL natural theme colors
+function triggerConfettiSparkles() {
+    const content = document.querySelector(".coupon-content");
+    if (!content) return;
+    
+    // Clear old custom sparkles
+    content.querySelectorAll(".sparkle").forEach(s => s.remove());
+    
+    const colors = ["#801C1C", "#1A2B4C", "#CFA042", "#2A724A"];
+    
+    for (let i = 0; i < 40; i++) {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.innerHTML = "✦";
+        sparkle.style.position = "absolute";
+        sparkle.style.color = colors[Math.floor(Math.random() * colors.length)];
+        sparkle.style.fontSize = `${Math.random() * 0.75 + 0.5}rem`;
+        sparkle.style.left = "50%";
+        sparkle.style.top = "40%";
+        sparkle.style.pointerEvents = "none";
+        sparkle.style.zIndex = "10";
+        
+        // Random trajectory
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = Math.random() * 150 + 50;
+        const tx = Math.cos(angle) * velocity;
+        const ty = Math.sin(angle) * velocity - (Math.random() * 50); // lift it up slightly
+        
+        sparkle.style.transition = "transform 1.2s cubic-bezier(0.1, 0.8, 0.3, 1), opacity 1.2s ease";
+        content.appendChild(sparkle);
+        
+        // Trigger transition
+        setTimeout(() => {
+            sparkle.style.transform = `translate(${tx}px, ${ty}px) rotate(${Math.random() * 360}deg)`;
+            sparkle.style.opacity = "0";
+        }, 20);
+        
+        // Clean up
+        setTimeout(() => {
+            sparkle.remove();
+        }, 1300);
     }
 }
 

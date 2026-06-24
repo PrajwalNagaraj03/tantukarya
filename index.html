@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Discover tantukarya, a premium handcrafted label celebrating the ancient art of Ajrakh hand block printing. Explore elegant tops, shirts, and shorts for women, naturally dyed and sustainably crafted.">
     <title>tantukarya | Premium Hand Block-Printed Ajrakh Apparel</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23801C1C'/%3E%3Ctext y='72' x='22' font-size='65' fill='%23CFA042'%3E✦%3C/text%3E%3C/svg%3E">
     
     <!-- CSS Stylesheet -->
     <link rel="stylesheet" href="style.css">
@@ -94,29 +96,53 @@
                         Ajrakh is not merely printing; it is a sacred conversation between wood, river water, metal rust, and natural dyes. Passing through multiple washes of hard-water resist, steam boiling, and sun-drying, each motif emerges with unmatched earthy richness.
                     </p>
                     
-                    <ul class="craft-steps">
-                        <li class="craft-step-item">
-                            <span class="craft-step-number">01</span>
-                            <div>
-                                <h3 class="craft-step-title">Saaj (Preparation)</h3>
-                                <p class="craft-step-desc">The fabric is washed with soda ash and castor oil to open up the cotton pores and prepare it for colors.</p>
+                    <!-- Interactive Craft Stepped Explorer -->
+                    <div class="craft-explorer">
+                        <div class="craft-tabs" id="craft-tabs">
+                            <button class="craft-tab-btn active" data-step="1">
+                                <span class="step-num">01</span>
+                                <span class="step-name">Saaj</span>
+                            </button>
+                            <button class="craft-tab-btn" data-step="2">
+                                <span class="step-num">02</span>
+                                <span class="step-name">Kasimi</span>
+                            </button>
+                            <button class="craft-tab-btn" data-step="3">
+                                <span class="step-num">03</span>
+                                <span class="step-name">Asal</span>
+                            </button>
+                            <button class="craft-tab-btn" data-step="4">
+                                <span class="step-num">04</span>
+                                <span class="step-name">Indigo</span>
+                            </button>
+                            <button class="craft-tab-btn" data-step="5">
+                                <span class="step-num">05</span>
+                                <span class="step-name">Baking</span>
+                            </button>
+                        </div>
+                        <div class="craft-content-panel" id="craft-content-panel">
+                            <div class="craft-content-step active" id="craft-step-1">
+                                <h3 class="craft-step-title">Saaj (Fabric Preparation)</h3>
+                                <p class="craft-step-desc">The grey fabric is washed and soaked repeatedly in carbonate of soda, castor oil, and organic inputs to open up cotton pores. This organic washing creates a soft, absorbent canvas essential for deep natural dye absorption.</p>
                             </div>
-                        </li>
-                        <li class="craft-step-item">
-                            <span class="craft-step-number">02</span>
-                            <div>
-                                <h3 class="craft-step-title">Asal (Printing the resist)</h3>
-                                <p class="craft-step-desc">Artisans print precise geometric starch outlines to resist color, using hand-carved wooden blocks.</p>
+                            <div class="craft-content-step" id="craft-step-2">
+                                <h3 class="craft-step-title">Kasimi (Black Stamping)</h3>
+                                <p class="craft-step-desc">A paste made of rusted iron scraps, fermented jaggery, and tamarind seed powder is pressed onto the fabric using hand-carved wooden blocks. The iron reacts with the myrobalan pre-treatment to create a rich, permanent black outline.</p>
                             </div>
-                        </li>
-                        <li class="craft-step-item">
-                            <span class="craft-step-number">03</span>
-                            <div>
-                                <h3 class="craft-step-title">Indigo & Madder Fermentation</h3>
-                                <p class="craft-step-desc">Fabrics are dipped repeatedly in natural clay fermentation vats to lock in deep blues and organic reds.</p>
+                            <div class="craft-content-step" id="craft-step-3">
+                                <h3 class="craft-step-title">Asal (Resist Printing)</h3>
+                                <p class="craft-step-desc">Artisans print precise geometric outlines using a resist paste made of gum, clay, and lime. When dyed, the covered sections remain clean and white, creating the signature high-contrast margins of authentic Ajrakh prints.</p>
                             </div>
-                        </li>
-                    </ul>
+                            <div class="craft-content-step" id="craft-step-4">
+                                <h3 class="craft-step-title">Indigo Vat Fermentation</h3>
+                                <p class="craft-step-desc">The fabric is dipped in deep, subterranean indigo fermentation vats. Fed with lime, jaggery, and dates, the living bacterial vat infuses the cotton with brilliant sky-blues and midnight-blue hues after multiple oxidation runs.</p>
+                            </div>
+                            <div class="craft-content-step" id="craft-step-5">
+                                <h3 class="craft-step-title">Sun Baking & Cleansing</h3>
+                                <p class="craft-step-desc">After dyeing, fabrics are laid out in the hot Thar desert sun to set natural pigments. A final river wash removes gum and excess clay, revealing the magnificent, multi-layered earthy patterns in their full vibrancy.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -146,6 +172,27 @@
                 <button class="filter-chip" data-filter="shorts">Shorts</button>
             </div>
             
+            <!-- Search & Sort Controls -->
+            <div class="shop-controls">
+                <div class="search-box-wrapper">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="product-search-input" placeholder="Search collection (e.g. indigo, shirt...)" aria-label="Search products">
+                    <button class="search-clear-btn" id="search-clear-btn" aria-label="Clear search">✕</button>
+                </div>
+                <div class="sort-box-wrapper">
+                    <label for="product-sort-select" class="sort-label">Sort By:</label>
+                    <select id="product-sort-select" aria-label="Sort products">
+                        <option value="recommended">Featured</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="name-asc">Alphabetical: A to Z</option>
+                    </select>
+                </div>
+            </div>
+            
             <!-- Product Grid -->
             <div class="product-grid" id="product-grid">
                 <!-- Dynamically populated via JavaScript -->
@@ -163,6 +210,75 @@
             </p>
             <div class="ornament-line">
                 <span class="ornament-star">✦</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- TESTIMONIALS SECTION --- -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="hero-subtitle">Artisan Admirers</span>
+                <h2 class="section-title">Woven into Lives</h2>
+                <p class="text-muted" style="max-width: 600px; margin: 1rem auto 0;">
+                    Read how our community values sustainable luxury and generational block print crafts.
+                </p>
+            </div>
+            
+            <div class="testimonials-slider-container">
+                <button class="testimonial-nav-btn prev" id="testimonial-prev-btn" aria-label="Previous testimonial">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                
+                <div class="testimonials-wrapper" id="testimonials-wrapper">
+                    <!-- Slide 1 -->
+                    <div class="testimonial-slide active" data-index="0">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">
+                            "The quality of the Indigo Peplum top is outstanding. The fabric is thick yet incredibly breathable, and the natural indigo smell reminds me of handcraft processes. It has received so many compliments!"
+                        </p>
+                        <div class="testimonial-author">
+                            <span class="author-name">Ananya R.</span>
+                            <span class="author-meta">Verified Buyer · Mumbai, India</span>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="testimonial-slide" data-index="1">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">
+                            "I'm in love with the Meera Linen Shirt. The coconut buttons are such a premium touch, and the geometric print layers are perfectly aligned. You can tell real hand carving was involved."
+                        </p>
+                        <div class="testimonial-author">
+                            <span class="author-name">Clara M.</span>
+                            <span class="author-meta">Verified Buyer · Berlin, Germany</span>
+                        </div>
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="testimonial-slide" data-index="2">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">
+                            "Finding true natural-dyed clothing with modern fits is hard. tantukarya does it flawlessly. The Avani Ochre shorts are so soft, high-waisted, and look beautiful. Support these artisans!"
+                        </p>
+                        <div class="testimonial-author">
+                            <span class="author-name">Aarav K.</span>
+                            <span class="author-meta">Verified Buyer · Bengaluru, India</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="testimonial-nav-btn next" id="testimonial-next-btn" aria-label="Next testimonial">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="testimonials-dots" id="testimonials-dots">
+                <button class="dot-btn active" data-index="0" aria-label="Go to slide 1"></button>
+                <button class="dot-btn" data-index="1" aria-label="Go to slide 2"></button>
+                <button class="dot-btn" data-index="2" aria-label="Go to slide 3"></button>
             </div>
         </div>
     </section>
@@ -1119,6 +1235,120 @@
                     <button type="button" class="btn btn-outline" id="customer-profile-close-btn" style="padding: 0.5rem 1.25rem;">Close</button>
                     <button type="button" class="btn btn-primary" id="customer-logout-btn" style="background-color: var(--color-primary-madder); border-color: var(--color-primary-madder); color: #fff; padding: 0.5rem 1.25rem;">Log Out</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Size Guide Modal -->
+    <div class="modal-overlay" id="size-guide-modal">
+        <div class="modal-card size-guide-modal-card">
+            <button class="modal-close-btn" id="size-guide-close-btn" aria-label="Close size guide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="size-guide-content">
+                <div class="size-guide-header text-center" style="margin-bottom: 1.5rem;">
+                    <span class="logo-icon">✦</span>
+                    <h2 class="size-guide-title" style="font-family: var(--font-heading); margin-top: 0.5rem;">Garment Size Guide</h2>
+                    <p class="text-muted" style="font-size: 0.85rem;">All measurements refer to body dimensions and are in inches.</p>
+                </div>
+                
+                <table class="size-guide-table" style="width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--color-border); text-align: left; background-color: var(--color-neutral-ecru);">
+                            <th style="padding: 0.75rem;">Size</th>
+                            <th style="padding: 0.75rem;">Bust / Chest</th>
+                            <th style="padding: 0.75rem;">Waist</th>
+                            <th style="padding: 0.75rem;">Hip</th>
+                            <th style="padding: 0.75rem;">Shoulder</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--color-border);">
+                            <td style="padding: 0.75rem;"><strong>XS</strong></td>
+                            <td style="padding: 0.75rem;">32" - 34"</td>
+                            <td style="padding: 0.75rem;">26" - 28"</td>
+                            <td style="padding: 0.75rem;">35" - 37"</td>
+                            <td style="padding: 0.75rem;">14.0"</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--color-border);">
+                            <td style="padding: 0.75rem;"><strong>S</strong></td>
+                            <td style="padding: 0.75rem;">34" - 36"</td>
+                            <td style="padding: 0.75rem;">28" - 30"</td>
+                            <td style="padding: 0.75rem;">37" - 39"</td>
+                            <td style="padding: 0.75rem;">14.5"</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--color-border);">
+                            <td style="padding: 0.75rem;"><strong>M</strong></td>
+                            <td style="padding: 0.75rem;">36" - 38"</td>
+                            <td style="padding: 0.75rem;">30" - 32"</td>
+                            <td style="padding: 0.75rem;">39" - 41"</td>
+                            <td style="padding: 0.75rem;">15.0"</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--color-border);">
+                            <td style="padding: 0.75rem;"><strong>L</strong></td>
+                            <td style="padding: 0.75rem;">38" - 40"</td>
+                            <td style="padding: 0.75rem;">32" - 34"</td>
+                            <td style="padding: 0.75rem;">41" - 43"</td>
+                            <td style="padding: 0.75rem;">15.5"</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--color-border);">
+                            <td style="padding: 0.75rem;"><strong>XL</strong></td>
+                            <td style="padding: 0.75rem;">40" - 42"</td>
+                            <td style="padding: 0.75rem;">34" - 36"</td>
+                            <td style="padding: 0.75rem;">43" - 45"</td>
+                            <td style="padding: 0.75rem;">16.0"</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="size-guide-notes" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+                    <div class="note-box" style="background: var(--color-neutral-ecru); padding: 1rem; border-radius: 6px; border-left: 3px solid var(--color-primary-indigo);">
+                        <strong style="display: block; font-size: 0.85rem; margin-bottom: 0.5rem; text-transform: uppercase;">How to Measure</strong>
+                        <ul style="padding-left: 1.2rem; font-size: 0.8rem; margin: 0; line-height: 1.5;">
+                            <li><strong>Bust:</strong> Measure around the fullest part.</li>
+                            <li><strong>Waist:</strong> Measure around the narrowest part.</li>
+                            <li><strong>Hips:</strong> Measure around the widest part.</li>
+                        </ul>
+                    </div>
+                    <div class="note-box care-box" style="background: rgba(128, 28, 28, 0.05); padding: 1rem; border-radius: 6px; border-left: 3px solid var(--color-primary-madder);">
+                        <strong style="display: block; font-size: 0.85rem; margin-bottom: 0.5rem; text-transform: uppercase; color: var(--color-primary-madder);">Artisan Care Notice</strong>
+                        <p style="font-size: 0.8rem; margin: 0; line-height: 1.5; color: #555;">Our cotton and linen garments are printed using pure handloom organic dyes. A minor shrinkage of 2-3% may occur on the first wash. If in doubt, size up!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Coupon Reward Modal -->
+    <div class="modal-overlay" id="coupon-modal">
+        <div class="modal-card coupon-modal-card">
+            <button class="modal-close-btn" id="coupon-close-btn" aria-label="Close discount popup">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="coupon-content text-center" style="padding: 2.5rem 2rem;">
+                <div class="coupon-decorations">
+                    <span class="coupon-star star-1">✦</span>
+                    <span class="coupon-star star-2">✦</span>
+                    <span class="coupon-star star-3">✦</span>
+                </div>
+                <div class="coupon-icon" style="font-size: 3rem; line-height: 1; margin-bottom: 1rem; animation: floatIcon 3s ease-in-out infinite;">✉</div>
+                <h2 class="coupon-title" style="font-family: var(--font-heading); margin-bottom: 0.75rem;">Welcome to tantukarya!</h2>
+                <p class="coupon-description" style="color: #6E6962; font-size: 0.95rem; margin-bottom: 1.5rem;">Thank you for subscribing to our newsletters. Enjoy this exclusive coupon code:</p>
+                <div class="coupon-card" style="border: 2px dashed var(--color-accent-ochre); background: var(--color-neutral-ecru); border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; position: relative;">
+                    <div class="coupon-card-header" style="font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; color: var(--color-accent-ochre-dark); margin-bottom: 0.5rem; text-transform: uppercase;">15% Off All Apparel</div>
+                    <div class="coupon-code-row" style="display: flex; gap: 0.75rem; justify-content: center; align-items: center; margin-bottom: 0.5rem;">
+                        <code id="coupon-code-text" style="font-family: monospace; font-size: 1.6rem; font-weight: 700; color: var(--color-primary-madder); background: #fff; padding: 0.35rem 0.85rem; border-radius: 4px; border: 1px solid var(--color-border); letter-spacing: 0.05em;">TANTU15</code>
+                        <button class="btn btn-secondary coupon-copy-btn" id="coupon-copy-btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; border-radius: 4px;">Copy Code</button>
+                    </div>
+                    <div class="coupon-card-footer" style="font-size: 0.75rem; color: #8A8078;">Valid on all orders. Apply at checkout.</div>
+                </div>
+                <p class="text-muted" style="font-size: 0.8rem; margin: 0;">By using this code, you help support water-resilient handprinting methods and secure fair-wage artisan livelihoods.</p>
             </div>
         </div>
     </div>
